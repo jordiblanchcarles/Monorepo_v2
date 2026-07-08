@@ -1,24 +1,34 @@
-import feathers from '@feathersjs/feathers';
-import express from '@feathersjs/express';
+import { feathers } from '@feathersjs/feathers';
+import express, { rest, json, urlencoded, errorHandler } from '@feathersjs/express';
 import socketio from '@feathersjs/socketio';
 import cors from 'cors';
 import helmet from 'helmet';
 import { APP_NAME } from '@cityadpro/common';
 
-const app = express(feathers());
+// Cast express because of CommonJS namespace/callable type mismatch under NodeNext
+const app = (express as any)(feathers());
 
 // Middlewares
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 // Feathers configurations
-app.configure(express.rest());
+app.configure(rest());
 app.configure(socketio());
+
+interface Campaign {
+  id: number;
+  name: string;
+  mediaUrl: string;
+  duration: number;
+}
 
 // Simple Feathers service for signage campaigns
 class CampaignService {
+  private campaigns: Campaign[];
+
   constructor() {
     this.campaigns = [
       { id: 1, name: 'Summer Promo', mediaUrl: 'https://example.com/summer.mp4', duration: 15 },
@@ -26,12 +36,12 @@ class CampaignService {
     ];
   }
 
-  async find() {
+  async find(): Promise<Campaign[]> {
     return this.campaigns;
   }
 
-  async create(data) {
-    const campaign = {
+  async create(data: Omit<Campaign, 'id'>): Promise<Campaign> {
+    const campaign: Campaign = {
       id: this.campaigns.length + 1,
       ...data
     };
@@ -43,7 +53,7 @@ class CampaignService {
 app.use('campaigns', new CampaignService());
 
 // Express error handler
-app.use(express.errorHandler());
+app.use(errorHandler());
 
 const port = process.env.PORT || 3030;
 app.listen(port, () => {

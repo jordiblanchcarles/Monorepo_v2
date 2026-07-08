@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "bootstrap": "npm install",
+    "build": "npm run build --workspaces --if-present",
     "backend:dev": "npm run dev --workspace=backend",
     "frontend:dev": "npm run dev --workspace=frontend",
     "player:dev": "npm run dev --workspace=player"

@@ -20,7 +20,8 @@ function createWindow() {
     }
   });
 
-  win.loadFile(path.join(__dirname, 'index.html'));
+  // Relative path to root / index.html from dist/main.js
+  win.loadFile(path.join(__dirname, '../index.html'));
 }
 
 app.whenReady().then(() => {
