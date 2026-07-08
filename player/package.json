@@ -1,0 +1,16 @@
+{
+  "name": "player",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "dependencies": {
+    "@cityadpro/common": "*"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0"
+  }
+}

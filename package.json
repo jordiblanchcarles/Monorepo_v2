@@ -1,0 +1,17 @@
+{
+  "name": "cityadpro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "player",
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "npm install",
+    "backend:dev": "npm run dev --workspace=backend",
+    "frontend:dev": "npm run dev --workspace=frontend",
+    "player:dev": "npm run dev --workspace=player"
+  }
+}
